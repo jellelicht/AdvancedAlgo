@@ -53,7 +53,14 @@ public class Util {
 		}
 		return result;
 	}
-	
+	public static String report(List<Job> jobs, int t){
+		String x = "[";
+		for(Job z : jobs){
+			x += "J{" + z.getDuration() + ", " + z.getDue() + "}, ";
+		}
+		x += "] =>" + computeTardiness(jobs, t);
+		return x;
+	}
 	public static List<MinTar> strategies(){
 		List<MinTar> retval = new ArrayList<MinTar>();
 		// Add more algorithms here:
@@ -65,6 +72,8 @@ public class Util {
 		retval.add(bestfirst);	
 		MinTar brute = new BruteForce();
 		retval.add(brute);
+		MinTar algowrapper = new AlgoWrapper();
+		retval.add(algowrapper);
 		//
 		
 		return retval;

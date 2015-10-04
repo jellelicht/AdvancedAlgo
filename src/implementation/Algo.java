@@ -1,4 +1,5 @@
 package implementation;
+import java.util.ArrayList;
 import java.util.List;
 
 import interfaces.Job;
@@ -31,27 +32,30 @@ public class Algo {
 		//Calculate k
 		for(int j = 1; j < n; j++){
 			if(jobs.get(j).getDuration() > op){
+				
 				k =j;
 			}
 		}
 		
 		//Calculate max_delta
-		int max_delta = n-k;
+		int max_delta = n-k-1; // correction for 0 based indexes; // e.g. 5-4
 
 		int tardiness = Integer.MAX_VALUE;
 		//Calculate sub problems
 		
-		for(int delta = 0; delta < max_delta+1; delta++){
-			int sub_tardiness = 0;
+		for(int delta = 0; delta <= max_delta; delta++){ //max delta will be 1:
+			int sub_tardiness;
+			List<Job> ji = new ArrayList<Job>(jobs.subList(0, k+delta+1));
+			ji.remove(jobs.get(k));
+			List<Job> jiii = new ArrayList<Job>(jobs.subList(k+delta+1, jobs.size())); // 4 + 1 + 1
 			
-			List<Job> ji = jobs.subList(0, k+delta+1);
-			ji.remove(k);
-			List<Job> jiii = jobs.subList(k+delta+1, jobs.size());
-			
-			sub_tardiness += T(ji, t);
-			sub_tardiness += Math.max(0,  C(ji)+jobs.get(k).getDuration()-jobs.get(k).getDue());
-			sub_tardiness += T(jiii, C(ji)+jobs.get(k).getDuration());
-			
+			int ti = T(ji, t);
+			int stk = Math.max(0,  
+					t + C(ji)+jobs.get(k).getDuration()- // forgot to add t
+					jobs.get(k).getDue());
+			int tiii = T(jiii, t+C(ji)+jobs.get(k).getDuration()); // forgot to add t
+			sub_tardiness = ti + stk + tiii;
+
 			if(sub_tardiness < tardiness){
 				tardiness = sub_tardiness;
 			}
