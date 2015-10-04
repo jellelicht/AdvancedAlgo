@@ -1,3 +1,4 @@
+package implementation;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -6,7 +7,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import external.algorithms;
-import implementation.Noop;
 import interfaces.Job;
 import interfaces.MinTar;
 
@@ -34,6 +34,26 @@ public class Util {
 		}
 		
 	}
+	public static List<List<Job>> permutations(List<Job> jobs){
+		List<List<Job>> result = new ArrayList<List<Job>>();
+		result.add(new ArrayList<Job>());
+		
+		for(int i = 0; i < jobs.size(); i++){
+			List<List<Job>> current = new ArrayList<List<Job>>();
+			for(List<Job> l : result) {
+				for(int j = 0; j< l.size()+1; j++){
+					l.add(j, jobs.get(i));
+					List<Job> temp = new ArrayList<Job>(l);
+					current.add(temp);
+					l.remove(j);
+				}
+			}
+			
+			result = new ArrayList<List<Job>>(current);
+		}
+		return result;
+	}
+	
 	public static List<MinTar> strategies(){
 		List<MinTar> retval = new ArrayList<MinTar>();
 		// Add more algorithms here:
@@ -43,10 +63,34 @@ public class Util {
 		retval.add(greedy);
 		MinTar bestfirst = algorithms.bestfirst();
 		retval.add(bestfirst);	
+		MinTar brute = new BruteForce();
+		retval.add(brute);
 		//
 		
 		return retval;
 	}
+	public static List<Job> split_problem(List<Job> jobs, int from, int to, int pk){
+		List<Job> retval = new ArrayList<Job>();
+		for(Job j: jobs.subList(from, to+1)){
+			if(j.getDuration() < pk){
+				retval.add(j);
+			}
+		}
+		return retval;
+	}
+	
+	public static int computeTardiness(List<Job> jobs, int t){
+		int tardiness = 0;
+		int total = t;
+		for(Job j : jobs){
+			total+= j.getDuration();
+			if(j.getDue() < total){
+				tardiness += total - j.getDue();
+			}
+		}
+		return tardiness;	
+	}
+	
 	public static List<Job> read_problem(String text_file) {
 		Scanner s = null;
 		List<Job> jobs = null;// = new ArrayList<Job>();
