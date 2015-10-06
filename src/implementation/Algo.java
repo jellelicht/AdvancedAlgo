@@ -1,10 +1,71 @@
 package implementation;
 import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import interfaces.Job;
 
 public class Algo {
+	private List<Job> globalJobs;
+	private Map<FingerPrint, Integer> OPT;
+	class FingerPrint{
+		private BitSet bs;
+		private Integer t;
+		public FingerPrint(BitSet bs, Integer t) {
+			this.bs = bs;
+			this.t = t;
+		}
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + getOuterType().hashCode();
+			result = prime * result + ((bs == null) ? 0 : bs.hashCode());
+			result = prime * result + ((t == null) ? 0 : t.hashCode());
+			return result;
+		}
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			FingerPrint other = (FingerPrint) obj;
+			if (!getOuterType().equals(other.getOuterType()))
+				return false;
+			if (bs == null) {
+				if (other.bs != null)
+					return false;
+			} else if (!bs.equals(other.bs))
+				return false;
+			if (t == null) {
+				if (other.t != null)
+					return false;
+			} else if (!t.equals(other.t))
+				return false;
+			return true;
+		}
+		private Algo getOuterType() {
+			return Algo.this;
+		}
+		
+	}
+	public FingerPrint getFingerPrint(List<Job> jobs, int t){
+		BitSet bs = new BitSet(globalJobs.size());
+		Job j;
+		for(int i=0; i< globalJobs.size(); i++){
+			j=globalJobs.get(i);
+			if(jobs.contains(j)){
+				bs.set(i);
+			}
+		}
+		
+		return new FingerPrint(bs, t);
+	}
 	public int C(List<Job> jobs){
 		
 		int sum = 0;
@@ -17,14 +78,25 @@ public class Algo {
 	}
 	
 	public int T(List<Job> jobs, int t){
+		if(this.OPT == null){ // first top level run detection
+			this.globalJobs = jobs;
+			this.OPT = new HashMap<FingerPrint, Integer>();
+		}
+		FingerPrint fp = getFingerPrint(jobs, t);
+		if(OPT.containsKey(fp)){
+			 return OPT.get(fp);
+		}
 		int n = jobs.size();
 		
 		//Handle base cases
 		if (n == 0){
+			OPT.put(fp, 0);
 			return 0;
 		} else if (n == 1){
 			Job j = jobs.get(0);
-			return Math.max(t+j.getDuration()-j.getDue(), 0);
+			int tardiness = Math.max(t+j.getDuration()-j.getDue(), 0);
+			OPT.put(fp, tardiness);
+			return tardiness;
 		}
 		
 		int op = jobs.get(0).getDuration();
@@ -61,6 +133,7 @@ public class Algo {
 				tardiness = sub_tardiness;
 			}
 		}
+		OPT.put(fp, tardiness);
 		return tardiness;
 	}
 }

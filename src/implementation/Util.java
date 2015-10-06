@@ -11,29 +11,6 @@ import interfaces.Job;
 import interfaces.MinTar;
 
 public class Util {
-	static class JobImpl implements Job {
-		private int duration;
-		private int due;
-		
-
-		public JobImpl(int duration, int due) {
-			this.duration = duration;
-			this.due = due;
-		}
-
-		@Override
-		public int getDuration() {
-			// TODO Auto-generated method stub
-			return duration;
-		}
-
-		@Override
-		public int getDue() {
-			// TODO Auto-generated method stub
-			return due;
-		}
-		
-	}
 	public static List<List<Job>> permutations(List<Job> jobs){
 		List<List<Job>> result = new ArrayList<List<Job>>();
 		result.add(new ArrayList<Job>());
@@ -64,14 +41,14 @@ public class Util {
 	public static List<MinTar> strategies(){
 		List<MinTar> retval = new ArrayList<MinTar>();
 		// Add more algorithms here:
-		MinTar noop = new Noop();
-		retval.add(noop);
-		MinTar greedy = algorithms.greedy();
-		retval.add(greedy);
-		MinTar bestfirst = algorithms.bestfirst();
-		retval.add(bestfirst);	
-		MinTar brute = new BruteForce();
-		retval.add(brute);
+		//MinTar noop = new Noop();
+		//retval.add(noop);
+		//MinTar greedy = algorithms.greedy();
+		//retval.add(greedy);
+		//MinTar bestfirst = algorithms.bestfirst();
+		//retval.add(bestfirst);	
+		//MinTar brute = new BruteForce();
+		//retval.add(brute);
 		MinTar algowrapper = new AlgoWrapper();
 		retval.add(algowrapper);
 		//
@@ -114,7 +91,7 @@ public class Util {
 				while (s.hasNextInt() && job < NumJobs) {
 					int l = s.nextInt();
 					int d = s.nextInt(); // unsafe?
-					jobs.add(new Util.JobImpl(l, d));
+					jobs.add(new JobImpl(l, d));
 					++job;
 				}
 			}
