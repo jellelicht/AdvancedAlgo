@@ -6,6 +6,7 @@ import interfaces.Job;
 
 public class Algo {
 	public int C(List<Job> jobs){
+		
 		int sum = 0;
 		
 		for(Job j: jobs){
@@ -32,8 +33,8 @@ public class Algo {
 		//Calculate k
 		for(int j = 1; j < n; j++){
 			if(jobs.get(j).getDuration() > op){
-				
 				k =j;
+				op = jobs.get(j).getDuration();
 			}
 		}
 		
