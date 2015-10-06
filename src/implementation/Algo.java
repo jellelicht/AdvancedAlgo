@@ -10,50 +10,12 @@ import interfaces.Job;
 public class Algo {
 	private List<Job> globalJobs;
 	private Map<FingerPrint, Integer> OPT;
-	class FingerPrint{
-		private BitSet bs;
-		private Integer t;
-		public FingerPrint(BitSet bs, Integer t) {
-			this.bs = bs;
-			this.t = t;
-		}
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + getOuterType().hashCode();
-			result = prime * result + ((bs == null) ? 0 : bs.hashCode());
-			result = prime * result + ((t == null) ? 0 : t.hashCode());
-			return result;
-		}
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			FingerPrint other = (FingerPrint) obj;
-			if (!getOuterType().equals(other.getOuterType()))
-				return false;
-			if (bs == null) {
-				if (other.bs != null)
-					return false;
-			} else if (!bs.equals(other.bs))
-				return false;
-			if (t == null) {
-				if (other.t != null)
-					return false;
-			} else if (!t.equals(other.t))
-				return false;
-			return true;
-		}
-		private Algo getOuterType() {
-			return Algo.this;
-		}
-		
+	private Map<FingerPrint, Integer> deltas;
+	
+	public int getDelta(FingerPrint fp){
+		return deltas.get(fp);
 	}
+	
 	public FingerPrint getFingerPrint(List<Job> jobs, int t){
 		BitSet bs = new BitSet(globalJobs.size());
 		Job j;
@@ -81,6 +43,7 @@ public class Algo {
 		if(this.OPT == null){ // first top level run detection
 			this.globalJobs = jobs;
 			this.OPT = new HashMap<FingerPrint, Integer>();
+			this.deltas = new HashMap<FingerPrint, Integer>();
 		}
 		FingerPrint fp = getFingerPrint(jobs, t);
 		if(OPT.containsKey(fp)){
@@ -115,7 +78,7 @@ public class Algo {
 
 		int tardiness = Integer.MAX_VALUE;
 		//Calculate sub problems
-		
+		int chosen_delta= -1;
 		for(int delta = 0; delta <= max_delta; delta++){ //max delta will be 1:
 			int sub_tardiness;
 			List<Job> ji = new ArrayList<Job>(jobs.subList(0, k+delta+1));
@@ -131,8 +94,10 @@ public class Algo {
 
 			if(sub_tardiness < tardiness){
 				tardiness = sub_tardiness;
+				chosen_delta = delta;
 			}
 		}
+		deltas.put(fp, chosen_delta);
 		OPT.put(fp, tardiness);
 		return tardiness;
 	}

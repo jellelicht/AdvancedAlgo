@@ -2,30 +2,25 @@ package implementation;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import interfaces.Job;
 import interfaces.MinTarOPT;
 
-class CustomComparator implements Comparator<Job> {
-    @Override
-    public int compare(Job o1, Job o2) {
-    	Integer i1, i2;
-    	i1 = o1.getDue();
-    	i2 = o2.getDue();
-        return i1.compareTo(i2);
-    }
-}
-
 public class AlgoWrapper implements MinTarOPT {
 	private Algo algo = new Algo();
 	private List<Job> jobs;
 	private int t = Integer.MAX_VALUE;
+	
 	@Override
 	public String getLabel() {
 		// TODO Auto-generated method stub
 		return "AlgoWrapper";
+	}	
+	
+	public int getDelta(List<Job> jobs, int t){
+		FingerPrint fp = algo.getFingerPrint(jobs, t);
+		return algo.getDelta(fp);
 	}
 
 	@Override

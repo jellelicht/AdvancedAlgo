@@ -76,6 +76,33 @@ public class Util {
 		}
 		return tardiness;	
 	}
+	public static int computeTMax(List<Job> jobs, int t){
+		
+		int maxTardiness = Integer.MIN_VALUE;
+		int total = t;
+		for(Job j : jobs){
+			total+= j.getDuration();
+			if(j.getDue() < total){
+				int tardiness = total - j.getDue();
+				if(tardiness > maxTardiness){
+					maxTardiness = tardiness;
+				}
+				
+			}
+		}
+		return maxTardiness;	
+	}
+	
+	public static int C(List<Job> jobs){
+		
+		int sum = 0;
+		
+		for(Job j: jobs){
+			sum += j.getDuration();
+		}
+		
+		return sum;
+	}
 	
 	public static List<Job> read_problem(String text_file) {
 		Scanner s = null;
