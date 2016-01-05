@@ -1,5 +1,6 @@
 %read graph into laplacian matrix L
 s = 'test2.txt';
+s
 %s = 'C:\Users\Chantal\Documents\MATLAB\Advanced algorithms\maxcut_5_10_10_instance_01';
 
 fid = fopen(s);
