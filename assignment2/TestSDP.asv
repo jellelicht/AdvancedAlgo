@@ -1,0 +1,18 @@
+function [M] = TestSDP;
+
+files = dir('Test/*.txt');
+M= [];
+for file = files';
+[LB,UB, elapsed] = readSdp(file.name);
+z = [LB,UB, elapsed];
+M = [M; z];
+end
+M
+
+%list of file names
+files.name;
+
+
+
+
+
