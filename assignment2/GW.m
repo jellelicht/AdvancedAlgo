@@ -1,7 +1,7 @@
-function best = GW(V,W);
+function best = GW(V,W,T);
 %V is already row oriented
 n = length(W);
-trials = 100;
+trials = T;
 best = 0;
 for i=1:trials
 

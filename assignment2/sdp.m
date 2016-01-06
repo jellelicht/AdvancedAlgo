@@ -1,4 +1,4 @@
-function [LB,UB] = sdp(W);
+function [LB,UB] = sdp(W,T);
 
 n = length(W);
 Y = sdpvar(n,n);
@@ -27,4 +27,4 @@ B = Q*sqrt(A);
 %fprintf('cholesky correct');
 %end 
 
-LB = GW(B,W);
+LB = GW(B,W,T);

@@ -1,17 +1,20 @@
-function [M] = TestSDP;
+function M = TestSDP;
 
-files = dir('Test/*.txt');
+files = dir('Test/max*');
 M= [];
 for file = files';
-[LB,UB, elapsed] = readSdp(file.name);
-z = [LB,UB, elapsed];
+metaData = strsplit(file.name, '_');
+nodes = str2num(cell2mat(metaData(2)));
+edgePro = str2double(cell2mat(metaData(3)))/10;
+mWeight =str2num(cell2mat(metaData(4)));
+
+[LB,UB, elapsed] = readSdp(file.name,T);
+z = [nodes,edgePro,mWeight,LB,UB, elapsed];
 M = [M; z];
 end
-M
+
 
 %list of file names
-files.name;
-
 
 
 
