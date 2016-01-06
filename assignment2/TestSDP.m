@@ -15,6 +15,7 @@ Ts = [ 1 5 10 25 50 100];
     end
 end
 
+csvwrite('csvlist.dat',M)
 
 %list of file names
 
