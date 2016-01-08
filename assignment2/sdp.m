@@ -4,17 +4,19 @@ tic
 n = length(W);
 Y = sdpvar(n,n);
 lines = [];
-tempMatrix = zeros(n,n);
-theSum = 0;
-for col = 1:n
-    for row = 1:n
-        if row >= col
-            break;
-        end
-        theSum = theSum +(W(row,col)*(1-Y(row,col))); 
-    end
-end
-h = -1/2*theSum;
+% tempMatrix = zeros(n,n);
+% theSum = 0;
+% for col = 1:n
+%     for row = 1:n
+%         if row >= col
+%             break;
+%         end
+%         theSum = theSum +(W(row,col)*(1-Y(row,col))); 
+%     end
+% end
+% h = -1/2*theSum;
+
+h = -1/4 * sum(dot(W,1-Y));
 c = [diag(Y) == ones(n,1), Y >=0];
 ops = sdpsettings('solver','sedumi','verbose',0);
 sol = solvesdp(c, h, ops);
