@@ -1,6 +1,7 @@
-function [LB,UB, elapsed] = readSdp(s, T);
+function lines = readSdp(s, M);
 %read graph into laplacian matrix L
 %s = 'test2.txt';
+fprintf('hi %s\n', s);
 fid = fopen(s);
 tline = fgets(fid);
 n = str2num(tline);
@@ -14,9 +15,8 @@ while ischar(tline)
     end
 end
 fclose(fid);
-tic;
-[LB,UB] = sdp(W,T);
-elapsed = toc;
+
+lines = sdp(W);
 
 
 

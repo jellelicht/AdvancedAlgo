@@ -1,8 +1,9 @@
-function [LB,UB] = sdp(W,T);
+function lines = sdp(W);
 
+tic
 n = length(W);
 Y = sdpvar(n,n);
-
+lines = [];
 tempMatrix = zeros(n,n);
 theSum = 0;
 for col = 1:n
@@ -25,6 +26,15 @@ y = double(Y);
 B = Q*sqrt(A);
 %if isequal(y,B*B')
 %fprintf('cholesky correct');
-%end 
+%end
+preTime = toc
 
-LB = GW(B,W,T);
+Ts = [1 5 10 25 50 75 100];
+for t = Ts
+    tic
+    LB = GW(B,W,t);
+    postTime = toc
+    elapsed = preTime + postTime;
+    pre = [LB, UB, elapsed];
+    lines = [lines; pre];     
+end
