@@ -1,9 +1,9 @@
 function M = TestSDP;
 
+%this function collects the test data (LB, UB, runtime) for graphs in the 'output' folder
 files = dir('generator/output/max*');
 M= [];
 for file = files';
-    %M = [M file.name];
     metaData = strsplit(file.name, '_');
     nodes = str2num(cell2mat(metaData(2)));
     edgePro = str2double(cell2mat(metaData(3)))/10;
@@ -11,7 +11,7 @@ for file = files';
 
     fprintf('reading sdp with filename: %s\n', file.name);
     lines = readSdp(strcat('generator/output/',file.name), M);
-    Ts = [1 5 10 25 50 75 100];
+    Ts = [1 5 10 25 50 75 100]; %number of trials
 
     i = 1;
     for t = Ts
@@ -29,9 +29,10 @@ for file = files';
     
 end
 
+%write test data to a file
 csvwrite('csvlist.dat',M)
 
-%list of file names
+
 
 
 

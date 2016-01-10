@@ -1,6 +1,6 @@
 function lines = readSdp(s, M);
-%read graph into laplacian matrix L
-%s = 'test2.txt';
+
+%read the graph into adjacency matrix M
 fprintf('hi %s\n', s);
 fid = fopen(s);
 tline = fgets(fid);
@@ -22,6 +22,5 @@ lines = sdp(W);
 
 
 
-%We voldoen aan norm(B(i,:)) van i tot n
 
 
